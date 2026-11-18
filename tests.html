@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Memory self-tests — word recall, digit span, block tapping | Memory for Life</title>
+<meta name="description" content="Free, informal browser memory self-checks: word-list immediate and delayed recall, digit span, Corsi block tapping, reaction time and story recall.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header id="site-header"></header>
+<main id="main">
+<section class="page-hero">
+  <h1>📝 Memory self-tests</h1>
+  <p>Simple versions of tasks used by doctors and researchers. Find a quiet spot, wear your glasses or hearing aids if you use them, and turn sound on (🔊) to hear words read aloud.</p>
+  <p class="disclaimer" role="note">⚠️ <strong>These are not diagnostic tests.</strong> They are informal, unvalidated versions for interest and for tracking yourself over time. Scores are affected by tiredness, mood, distraction, eyesight, hearing and your device. A low score does not mean dementia, and a good score does not rule out a problem. If you're worried, please see a doctor — they can use validated tools such as the MoCA or Mini-Cog (see the <a href="writeup.html#4-how-memory-is-tested">write-up</a>).</p>
+</section>
+
+<div class="tabs" role="tablist" aria-label="Self-tests">
+  <button class="tab" role="tab" aria-selected="true" aria-controls="t-words">🗒️ Word list</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="t-digits">🔢 Digit span</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="t-corsi">🟪 Block tapping</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="t-react">⚡ Reaction speed</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="t-story">📚 Story recall</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="t-history">📈 My results</button>
+</div>
+
+<!-- WORD LIST -->
+<section id="t-words" class="panel active" role="tabpanel">
+  <div class="grid c2">
+    <div>
+      <h2 style="margin-top:0">Word list: immediate &amp; delayed recall</h2>
+      <p>Based on word-list tests like the CERAD list and the Rey Auditory Verbal Learning Test. You'll see (and hear) <strong>10 words</strong>, one at a time. Then type all you remember. Come back after <strong>5 minutes or more</strong> — try another test meanwhile — for the <em>delayed recall</em>. Delayed recall is one of the most sensitive measures of memory change.</p>
+      <label><input type="checkbox" id="w-speak" checked> Read the words aloud</label>
+    </div>
+    <div class="stage" id="w-stage">
+      <div class="hud"><span class="pill" id="w-status">Ready</span></div>
+      <div class="big" id="w-show" aria-live="polite">🗒️</div>
+      <div id="w-input" hidden>
+        <label for="w-answer">Type every word you remember, separated by spaces or commas:</label>
+        <textarea id="w-answer" autocomplete="off" spellcheck="false"></textarea>
+        <div class="btn-row"><button class="btn teal" id="w-check">✔ Check my words</button></div>
+      </div>
+      <div class="btn-row" id="w-startrow"><button class="btn" id="w-start">▶ Start word list</button></div>
+      <div id="w-result"></div>
+      <div id="w-delayed" class="callout" hidden>
+        <strong>Delayed recall</strong> — time since you learned the list: <span id="w-elapsed">0:00</span>
+        <p class="small muted">Best after at least 5 minutes. Don't look back at the list!</p>
+        <button class="btn plum" id="w-delay-btn">🕰️ Do delayed recall now</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIGIT SPAN -->
+<section id="t-digits" class="panel" role="tabpanel">
+  <div class="grid c2">
+    <div>
+      <h2 style="margin-top:0">Digit span</h2>
+      <p>Numbers appear one per second. Type them back. Each success adds a digit; two misses at the same length ends the test.</p>
+      <ul><li><strong>Forward</strong> measures short-term memory and attention.</li><li><strong>Backward</strong> (type them in reverse order) measures working memory — holding and rearranging information. Backward spans are usually shorter than forward.</li></ul>
+      <label for="d-mode">Mode: </label>
+      <select id="d-mode"><option value="f">Forward</option><option value="b">Backward</option></select>
+      <label style="display:block;margin-top:.6rem"><input type="checkbox" id="d-speak" checked> Say the digits aloud</label>
+    </div>
+    <div class="stage">
+      <div class="hud"><span class="pill" id="d-len">Length: –</span><span class="pill" id="d-best">Best: –</span></div>
+      <div class="big" id="d-show" aria-live="polite">🔢</div>
+      <form id="d-form" hidden><label for="d-answer" id="d-prompt">Type the digits:</label>
+        <input type="text" id="d-answer" inputmode="numeric" autocomplete="off">
+        <div class="btn-row"><button class="btn teal" type="submit">✔ Submit</button></div></form>
+      <div class="btn-row"><button class="btn" id="d-start">▶ Start digit span</button></div>
+      <div id="d-result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CORSI -->
+<section id="t-corsi" class="panel" role="tabpanel">
+  <div class="grid c2">
+    <div>
+      <h2 style="margin-top:0">Block tapping (Corsi-style)</h2>
+      <p>Blocks light up one by one with a tone. When they stop, tap the blocks <strong>in the same order</strong>. This is a visual-spatial version of digit span. Sequences start at 2 blocks and grow; two misses at one length ends the test.</p>
+    </div>
+    <div class="stage">
+      <div class="hud"><span class="pill" id="c-len">Length: –</span><span class="pill" id="c-status">Ready</span></div>
+      <div class="corsi" id="c-board" aria-label="Block board"></div>
+      <div class="btn-row"><button class="btn" id="c-start">▶ Start block tapping</button></div>
+      <div id="c-result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- REACTION -->
+<section id="t-react" class="panel" role="tabpanel">
+  <div class="grid c2">
+    <div>
+      <h2 style="margin-top:0">Reaction speed</h2>
+      <p>Processing speed tends to slow with age, and it affects how well we take in new information. It was one of the abilities trained in the ACTIVE study, where benefits lasted 10 years.<sup><a href="writeup.html#ref11">[11]</a></sup></p>
+      <p>Tap the big button (or press the <kbd>Space</kbd> bar) to start. When it turns <strong style="color:var(--green)">green</strong>, tap as fast as you can. 5 tries.</p>
+    </div>
+    <div class="stage">
+      <div class="hud"><span class="pill" id="r-trial">Try 0 / 5</span></div>
+      <button class="react-pad" id="r-pad">Tap here to start</button>
+      <div id="r-result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section id="t-story" class="panel" role="tabpanel">
+  <div class="grid c2">
+    <div>
+      <h2 style="margin-top:0">Story recall</h2>
+      <p>Like the "Logical Memory" tasks used by neuropsychologists. Read (or listen to) a short story <strong>once</strong>, then retell it in your own words. You score a point for each of the 20 "idea units" you include. Come back later for delayed recall.</p>
+      <label><input type="checkbox" id="s-speak" checked> Read the story aloud</label>
+    </div>
+    <div class="stage">
+      <div id="s-story" class="callout" hidden></div>
+      <div id="s-input" hidden><label for="s-answer">Retell the story with as much detail as you can:</label><textarea id="s-answer" spellcheck="false"></textarea>
+        <div class="btn-row"><button class="btn teal" id="s-check">✔ Score my retelling</button></div></div>
+      <div class="btn-row"><button class="btn" id="s-start">▶ Show the story</button><button class="btn plum" id="s-done" hidden>I've read it — hide story</button></div>
+      <div id="s-result"></div>
+      <div id="s-delayed" class="callout" hidden>Delayed story recall — time since reading: <span id="s-elapsed">0:00</span><br><button class="btn plum" id="s-delay-btn" style="margin-top:.5rem">🕰️ Retell it again now</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTORY -->
+<section id="t-history" class="panel" role="tabpanel">
+  <h2 style="margin-top:0">📈 My results</h2>
+  <p>Your results are saved only in this browser. The most useful comparison is <strong>you against yourself</strong> over weeks and months — under similar conditions (same time of day, same device).</p>
+  <div class="table-wrap"><table><thead><tr><th>Test</th><th>Date</th><th>Result</th></tr></thead><tbody id="h-body"></tbody></table></div>
+  <div class="btn-row"><button class="btn ghost" id="h-clear">🗑 Clear my test history</button></div>
+</section>
+
+<section class="callout alert" style="margin-top:2rem"><h3 style="margin-top:0">When to see a doctor</h3><p>If memory problems are getting worse, affecting daily life, or worrying family or friends, make an appointment. Bring a list of medicines (including over-the-counter ones), and ideally someone who knows you well. Many causes are treatable.</p></section>
+</main>
+<footer id="site-footer"></footer>
+<script src="js/common.js"></script>
+<script src="js/tests.js"></script>
+</body>
+</html>

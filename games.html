@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Memory games with sound — Memory for Life</title>
+<meta name="description" content="Free memory games for older adults: card matching, Simon tones, What Changed, Grocery List, Pattern Grid and N-Back, with levels, sounds and saved scores.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header id="site-header"></header>
+<main id="main">
+<section class="page-hero">
+  <h1>🎮 Memory games</h1>
+  <p>Six games that exercise different kinds of memory. Pick a level, turn the sound on 🔊, and play a few rounds each day. Your best scores are saved on this device.</p>
+  <p class="small muted">Games are a fun way to stay mentally active. Research suggests the benefits of brain training are mostly for the skills you practise, so mix games with exercise, social time and learning new things.</p>
+</section>
+
+<div class="tabs" role="tablist" aria-label="Games">
+  <button class="tab" role="tab" aria-selected="true" aria-controls="g-match">🃏 Memory Match</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="g-simon">🎵 Simon Tones</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="g-changed">🔍 What Changed?</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="g-grocery">🛒 Grocery List</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="g-pattern">🔷 Pattern Grid</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="g-nback">🔁 N-Back</button>
+</div>
+
+<section id="g-match" class="panel active" role="tabpanel">
+  <div class="stage">
+    <h2 style="margin-top:0">🃏 Memory Match <span class="pill">visual memory</span></h2>
+    <p>Turn over two cards at a time and find all the matching pairs in as few moves as you can.</p>
+    <div class="hud"><label>Level <select id="m-level"><option value="6">Easy · 6 pairs</option><option value="8" selected>Medium · 8 pairs</option><option value="12">Hard · 12 pairs</option></select></label>
+      <button class="btn" id="m-start">▶ New game</button><span class="pill" id="m-moves">Moves: 0</span><span class="pill" id="m-time">Time: 0s</span><span class="pill ok" id="m-best">Best: –</span></div>
+    <div class="board" id="m-board"></div>
+  </div>
+</section>
+
+<section id="g-simon" class="panel" role="tabpanel">
+  <div class="stage">
+    <h2 style="margin-top:0">🎵 Simon Tones <span class="pill">sequence memory · sound</span></h2>
+    <p>Watch and <strong>listen</strong> as the pads light up. Repeat the sequence. Each round adds one more note.</p>
+    <div class="hud"><label>Speed <select id="s-level"><option value="900">Gentle</option><option value="650" selected>Normal</option><option value="420">Quick</option></select></label>
+      <button class="btn" id="si-start">▶ Start</button><span class="pill" id="si-round">Round: –</span><span class="pill ok" id="si-best">Best: –</span></div>
+    <p id="si-msg" class="pill" aria-live="polite">Press Start</p>
+    <div class="simon" id="si-pads"><button aria-label="Green">1</button><button aria-label="Red">2</button><button aria-label="Yellow">3</button><button aria-label="Blue">4</button></div>
+  </div>
+</section>
+
+<section id="g-changed" class="panel" role="tabpanel">
+  <div class="stage">
+    <h2 style="margin-top:0">🔍 What Changed? <span class="pill">attention · visual memory</span></h2>
+    <p>Study the pictures. They'll be covered for a moment, then one picture will be <strong>swapped</strong> for a new one. Tap the one that changed.</p>
+    <div class="hud"><label>Level <select id="w-level"><option value="4">Easy · 4 pictures</option><option value="6" selected>Medium · 6</option><option value="9">Hard · 9</option><option value="12">Expert · 12</option></select></label>
+      <button class="btn" id="wc-start">▶ Start</button><span class="pill" id="wc-streak">Streak: 0</span><span class="pill ok" id="wc-best">Best: –</span></div>
+    <p id="wc-msg" class="pill" aria-live="polite">Press Start</p>
+    <div class="items" id="wc-grid"></div>
+  </div>
+</section>
+
+<section id="g-grocery" class="panel" role="tabpanel">
+  <div class="stage">
+    <h2 style="margin-top:0">🛒 Grocery List <span class="pill">everyday memory · word recall</span></h2>
+    <p>Memorise the shopping list (it's read aloud too). Then pick those items from the shop shelves. Tip: make a story or picture linking the items!</p>
+    <div class="hud"><label>List size <select id="gr-level"><option value="4">Easy · 4 items</option><option value="6" selected>Medium · 6</option><option value="8">Hard · 8</option><option value="10">Expert · 10</option></select></label>
+      <label><input type="checkbox" id="gr-speak" checked> Read aloud</label>
+      <button class="btn" id="gr-start">▶ New list</button><span class="pill ok" id="gr-best">Best: –</span></div>
+    <p id="gr-msg" class="pill" aria-live="polite">Press New list</p>
+    <div class="items" id="gr-grid"></div>
+    <div class="btn-row"><button class="btn teal" id="gr-done" hidden>✔ Check my basket</button></div>
+    <div id="gr-result"></div>
+  </div>
+</section>
+
+<section id="g-pattern" class="panel" role="tabpanel">
+  <div class="stage">
+    <h2 style="margin-top:0">🔷 Pattern Grid <span class="pill">visual-spatial memory</span></h2>
+    <p>Some squares light up for a moment. Tap the same squares to rebuild the pattern. The pattern grows each level; 3 lives.</p>
+    <div class="hud"><button class="btn" id="p-start">▶ Start</button><span class="pill" id="p-level">Level: –</span><span class="pill" id="p-lives">Lives: 3</span><span class="pill ok" id="p-best">Best: –</span></div>
+    <p id="p-msg" class="pill" aria-live="polite">Press Start</p>
+    <div class="pattern" id="p-grid"></div>
+  </div>
+</section>
+
+<section id="g-nback" class="panel" role="tabpanel">
+  <div class="stage">
+    <h2 style="margin-top:0">🔁 N-Back <span class="pill">working memory</span></h2>
+    <p>Letters appear (and are spoken) one at a time. Press <strong>MATCH</strong> (or the <kbd>M</kbd> key) when the letter is the same as the one <strong>N steps back</strong>. In 1-back that means "same as the last one".</p>
+    <div class="hud"><label>Level <select id="n-level"><option value="1">1-back</option><option value="2">2-back</option><option value="3">3-back</option></select></label>
+      <label><input type="checkbox" id="n-speak" checked> Speak letters</label>
+      <button class="btn" id="n-start">▶ Start (20 letters)</button><span class="pill" id="n-count">0 / 20</span><span class="pill ok" id="n-best">Best: –</span></div>
+    <div class="nback-letter" id="n-letter" aria-live="assertive">·</div>
+    <div class="btn-row" style="justify-content:center"><button class="btn plum" id="n-match" style="font-size:1.4rem;padding:1rem 3rem" disabled>MATCH</button></div>
+    <div id="n-result"></div>
+  </div>
+</section>
+</main>
+<footer id="site-footer"></footer>
+<script src="js/common.js"></script>
+<script src="js/games.js"></script>
+</body>
+</html>
