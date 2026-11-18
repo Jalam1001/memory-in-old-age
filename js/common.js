@@ -85,7 +85,7 @@
 
   /* Reveal */
   function initReveal(){const els=U.$$(".reveal");if(!("IntersectionObserver" in window)){els.forEach(e=>e.classList.add("in"));return;}
-    const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target);}}),{threshold:.12});
+    const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target);}}),{threshold:0.01,rootMargin:"0px 0px -40px 0px"});
     els.forEach(e=>io.observe(e));}
 
   window.Sound=Sound; window.speak=speak; window.Store=Store; window.U=U; window.toast=toast;
