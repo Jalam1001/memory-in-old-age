@@ -248,3 +248,4 @@ input[type=date]{font:inherit;font-size:1.1rem;padding:.6rem .8rem;border-radius
 .ev-legend span:not(.ev){font-size:.95rem;color:var(--ink2)}
 /* stage 3: 8 nav items — let the header use more width on desktop */
 @media (min-width:1181px){.nav{max-width:1360px}.nav ul{gap:.1rem}.nav a.link{padding:.5rem .55rem;font-size:.98rem}}
+.research-link{margin:.6rem 0 0;padding:.55rem .9rem;background:#EFE4F8;border-radius:12px;font-size:.95rem}
