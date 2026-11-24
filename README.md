@@ -14,7 +14,7 @@ Designed for older adults and their families: large type, high contrast, warm co
 | **Write-up** | Normal ageing vs. MCI vs. dementia, causes of decline, the 14 Lancet Commission risk factors, treatable causes, how memory is tested, how to improve it, and 18 references |
 | **Self-tests** | Word list (immediate + delayed recall), digit span (forward/backward), Corsi-style block tapping, reaction speed, story recall, and a results history |
 | **Improve memory** | Strategies for *building* memories (attention, elaboration, chunking, dual coding, memory palace) and *recalling* them (retrieval practice, spacing, context cues), lifestyle evidence table, a spaced-review planner, and a daily routine |
-| **Games** | 🃏 Memory Match · 🎵 Simon Tones · 🔍 What Changed? · 🛒 Grocery List · 🔷 Pattern Grid · 🔁 N-Back — each with difficulty levels and saved best scores |
+| **Games** | **Main (untimed):** ✏️ Crossword (easy/medium/hard, 2 hand-written puzzles each, check & reveal) · 🗂️ Spaced Recall (your own names/facts, reviewed at 1 · 3 · 7 · 14 · 30 · 60 days, plus an in-session practice round) · 🃏 Picture Pairs (4–15 pairs, optional timer) · 📈 per-game progress history. **More games:** 🎵 Simon Tones · 🔍 What Changed? · 🛒 Grocery List · 🔷 Pattern Grid · 🔁 N-Back |
 
 **Sound:** all tones are generated live with the Web Audio API (flip, correct, wrong, win, Simon notes, block tones). Word lists, digits, stories and N-back letters can be read aloud with the browser's speech synthesis. One mute button controls everything.
 
@@ -47,9 +47,16 @@ index.html  writeup.html  tests.html  improve.html  games.html
 css/style.css
 js/common.js   # header/footer, Web Audio sounds, speech, storage, tabs, animations
 js/tests.js    # self-tests
-js/games.js    # games
+js/games.js    # Picture Pairs + extra games
+js/games2.js   # Crossword, Spaced Recall, progress view
 WRITEUP.md     # full write-up + references
 ```
+
+## Changelog
+
+- **Version 0.2 — in progress** (deployed from `main`)
+  - Stage 1: three main games built in and placed first on the Games page — Crossword with difficulty levels, Spaced Recall for names and facts, Picture Pairs with adjustable board sizes. All untimed by default, with explanations of what each score measures and a per-game progress view. Data stays in the browser (`localStorage`), with clear-data buttons.
+- **Version 0.1 — original site** — tag [`v0.1`](https://github.com/Jalam1001/memory-in-old-age/releases/tag/v0.1), branch [`v0.1`](https://github.com/Jalam1001/memory-in-old-age/tree/refs/heads/v0.1) (commit `c8baf04`). Write-up, self-tests, six games with sound.
 
 ## Disclaimer
 

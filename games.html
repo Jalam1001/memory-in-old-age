@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Memory games with sound — Memory for Life</title>
-<meta name="description" content="Free memory games for older adults: card matching, Simon tones, What Changed, Grocery List, Pattern Grid and N-Back, with levels, sounds and saved scores.">
+<meta name="description" content="Free, untimed memory games for older adults: crosswords, spaced recall for names and facts, picture-pair matching, plus Simon tones, Simon tones, What Changed, Grocery List, Pattern Grid and N-Back, with levels, sounds and saved scores.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -16,8 +16,13 @@
   <p class="small muted">Games are a fun way to stay mentally active. Research suggests the benefits of brain training are mostly for the skills you practise, so mix games with exercise, social time and learning new things.</p>
 </section>
 
+<h2 style="margin-top:.5rem">⭐ Main games <span class="pill ok">untimed</span></h2>
 <div class="tabs" role="tablist" aria-label="Games">
-  <button class="tab" role="tab" aria-selected="true" aria-controls="g-match">🃏 Memory Match</button>
+  <button class="tab featured" role="tab" aria-selected="true" aria-controls="g-cross">✏️ Crossword</button>
+  <button class="tab featured" role="tab" aria-selected="false" aria-controls="g-spaced">🗂️ Spaced Recall</button>
+  <button class="tab featured" role="tab" aria-selected="false" aria-controls="g-match">🃏 Picture Pairs</button>
+  <button class="tab featured" role="tab" aria-selected="false" aria-controls="g-progress">📈 My progress</button>
+  <span class="tab-sep" aria-hidden="true">More games:</span>
   <button class="tab" role="tab" aria-selected="false" aria-controls="g-simon">🎵 Simon Tones</button>
   <button class="tab" role="tab" aria-selected="false" aria-controls="g-changed">🔍 What Changed?</button>
   <button class="tab" role="tab" aria-selected="false" aria-controls="g-grocery">🛒 Grocery List</button>
@@ -25,13 +30,73 @@
   <button class="tab" role="tab" aria-selected="false" aria-controls="g-nback">🔁 N-Back</button>
 </div>
 
-<section id="g-match" class="panel active" role="tabpanel">
+<section id="g-cross" class="panel active" role="tabpanel">
   <div class="stage">
-    <h2 style="margin-top:0">🃏 Memory Match <span class="pill">visual memory</span></h2>
-    <p>Turn over two cards at a time and find all the matching pairs in as few moves as you can.</p>
-    <div class="hud"><label>Level <select id="m-level"><option value="6">Easy · 6 pairs</option><option value="8" selected>Medium · 8 pairs</option><option value="12">Hard · 12 pairs</option></select></label>
-      <button class="btn" id="m-start">▶ New game</button><span class="pill" id="m-moves">Moves: 0</span><span class="pill" id="m-time">Time: 0s</span><span class="pill ok" id="m-best">Best: –</span></div>
+    <h2 style="margin-top:0">✏️ Crossword <span class="pill">word finding · recall</span></h2>
+    <p>Tap a square (or a clue) and type. Tap the same square again to switch between <strong>Across</strong> and <strong>Down</strong>. Take as long as you like — there is no timer.</p>
+    <div class="hud"><label>Level <select id="cw-level"><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select></label>
+      <label>Puzzle <select id="cw-puzzle"></select></label>
+      <span class="pill" id="cw-status">–</span></div>
+    <div class="cw-wrap">
+      <div><div class="cw-grid" id="cw-grid" aria-label="Crossword grid"></div>
+        <p class="cw-current" id="cw-current" aria-live="polite"></p>
+        <div class="btn-row"><button class="btn teal" id="cw-check">✔ Check</button><button class="btn ghost" id="cw-reveal1">💡 Reveal letter</button><button class="btn ghost" id="cw-revealw">💡 Reveal word</button><button class="btn ghost" id="cw-clear">↺ Clear</button></div></div>
+      <div class="cw-clues"><h3>Across</h3><ol id="cw-across"></ol><h3>Down</h3><ol id="cw-down"></ol></div>
+    </div>
+    <div id="cw-result"></div>
+    <details class="explain"><summary>What does the score measure?</summary><p>Your score is the <strong>percentage of letters you filled in yourself</strong>, without using "Reveal". Checking your answers is free. Crosswords exercise word finding (retrieving words from memory from a clue), spelling and general knowledge. It's a measure of how this puzzle went for you, not a test of memory health.</p></details>
+  </div>
+</section>
+
+<section id="g-spaced" class="panel" role="tabpanel">
+  <div class="stage">
+    <h2 style="margin-top:0">🗂️ Spaced Recall <span class="pill">names · facts · long-term memory</span></h2>
+    <p>Add names or facts you want to remember — a new neighbour, a grandchild's teacher, a phone number, where the spare key is. The game asks you about each one at <strong>growing intervals</strong>: 1 day, 3 days, 1 week, 2 weeks, 1 month, 2 months. Get one wrong and it starts again from 1 day. No timer.</p>
+    <p class="small muted">🔒 Everything you type stays in this browser on this device. Nothing is sent anywhere.</p>
+    <div class="grid c2">
+      <form id="sr-form" class="callout" autocomplete="off">
+        <h3 style="margin-top:0">➕ Add something to remember</h3>
+        <p><label><input type="radio" name="sr-type" value="name" checked> A name</label> &nbsp; <label><input type="radio" name="sr-type" value="fact"> A fact</label></p>
+        <div id="sr-name-fields"><label for="sr-name">Name</label><input type="text" id="sr-name" placeholder="e.g. Priya">
+          <label for="sr-cue" style="display:block;margin-top:.6rem">Who is it? (optional cue)</label><input type="text" id="sr-cue" placeholder="e.g. New neighbour at no. 12, has a golden retriever"></div>
+        <div id="sr-fact-fields" hidden><label for="sr-q">Question</label><input type="text" id="sr-q" placeholder="e.g. Where is the spare key?">
+          <label for="sr-a" style="display:block;margin-top:.6rem">Answer</label><input type="text" id="sr-a" placeholder="e.g. Under the blue flowerpot"></div>
+        <div class="btn-row"><button class="btn teal" type="submit">➕ Add</button></div>
+      </form>
+      <div>
+        <div class="grid c2" style="gap:.8rem"><div class="card teal"><div class="stat" id="sr-due">0</div><p class="small">due for review now</p></div><div class="card plum"><div class="stat" id="sr-total">0</div><p class="small">items saved</p></div></div>
+        <div class="btn-row"><button class="btn" id="sr-review">▶ Review due items</button><button class="btn plum" id="sr-practice">🔁 Practice round (all items)</button></div>
+        <p class="small muted">Practice round = an extra in-session drill: each item comes back after 1, then 2, then 4 other questions. It doesn't change your review schedule.</p>
+      </div>
+    </div>
+    <div id="sr-quiz" class="stage" hidden style="background:#FFF8EF;margin-top:1rem"></div>
+    <h3>📋 Your items</h3>
+    <div class="table-wrap"><table><thead><tr><th>Item</th><th>Stage</th><th>Next review</th><th>Accuracy</th><th></th></tr></thead><tbody id="sr-list"></tbody></table></div>
+    <div class="btn-row"><button class="btn ghost" id="sr-sample">✨ Add 3 example items</button><button class="btn ghost" id="sr-clear">🗑 Clear all Spaced Recall data</button></div>
+    <details class="explain"><summary>What do the stage and score measure?</summary><p><strong>Stage</strong> (1–7) shows how long an item has stayed in your memory: each correct review moves it up a stage and pushes the next review further away. Stage 7 means you remembered it after a 2-month gap. <strong>Accuracy</strong> is the percentage of reviews you got right. A session score is the percentage you recalled correctly the first time you were asked. Spaced retrieval — practising recall at increasing gaps — is a technique used in memory rehabilitation.</p></details>
+  </div>
+</section>
+
+<section id="g-progress" class="panel" role="tabpanel">
+  <div class="stage">
+    <h2 style="margin-top:0">📈 My progress</h2>
+    <p>Your recent results for the main games, stored only in this browser.</p>
+    <div class="grid c3" id="pg-summary"></div>
+    <div class="table-wrap" style="margin-top:1rem"><table><thead><tr><th>Game</th><th>When</th><th>Result</th></tr></thead><tbody id="pg-body"></tbody></table></div>
+    <div class="btn-row"><button class="btn ghost" id="pg-clear">🗑 Clear game history</button></div>
+  </div>
+</section>
+
+<section id="g-match" class="panel" role="tabpanel">
+  <div class="stage">
+    <h2 style="margin-top:0">🃏 Picture Pairs <span class="pill">visual memory</span></h2>
+    <p>Turn over two cards at a time. If they match, they stay face up. Find all the pairs. There's no rush — the timer is off unless you turn it on.</p>
+    <div class="hud"><label>Board <select id="m-level"><option value="4">4 pairs (8 cards)</option><option value="6">6 pairs (12 cards)</option><option value="8" selected>8 pairs (16 cards)</option><option value="10">10 pairs (20 cards)</option><option value="12">12 pairs (24 cards)</option><option value="15">15 pairs (30 cards)</option></select></label>
+      <label><input type="checkbox" id="m-timer"> Show timer</label>
+      <button class="btn" id="m-start">▶ New game</button><span class="pill" id="m-moves">Moves: 0</span><span class="pill" id="m-time" hidden>Time: 0s</span><span class="pill ok" id="m-best">Best: –</span></div>
     <div class="board" id="m-board"></div>
+    <div id="m-result"></div>
+    <details class="explain"><summary>What does the score measure?</summary><p><strong>Moves</strong> = how many pairs of cards you turned over. Fewer moves means you remembered where you'd seen each picture (visual-spatial memory). The smallest possible number of moves equals the number of pairs, but that needs luck — about double is a good game. Best scores are kept separately for each board size.</p></details>
   </div>
 </section>
 
@@ -97,5 +162,6 @@
 <footer id="site-footer"></footer>
 <script src="js/common.js"></script>
 <script src="js/games.js"></script>
+<script src="js/games2.js"></script>
 </body>
 </html>

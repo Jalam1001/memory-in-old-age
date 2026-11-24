@@ -3,14 +3,19 @@
 const {$, $$, sleep, sample, shuffle, el} = U;
 const showBest=(id,key,suffix="")=>{const b=Store.get("best."+key);$(id).textContent="Best: "+(b===null?"–":b+suffix);};
 
-/* ============ MEMORY MATCH ============ */
+/* ============ PICTURE PAIRS (memory match) ============ */
 const FACES=["🍎","🌻","🐶","🚗","🎈","🐟","🌙","⭐","🍰","🎩","🦋","☕","🔑","🎵","🍋","🐢","🌈","🏠"];
 let mState=null;
 function mBestKey(){return "match_"+$("#m-level").value;}
+function mCols(n){const c=2*n,narrow=innerWidth<640;if(c<=8)return 4;if(c<=16)return 4;if(c===20)return narrow?4:5;if(c===24)return narrow?4:6;return narrow?5:6;}
+const mTimerOn=()=>$("#m-timer").checked;
+$("#m-timer").checked=Store.get("match.timer",false);
+$("#m-timer").onchange=()=>{Store.set("match.timer",mTimerOn());$("#m-time").hidden=!mTimerOn();};
+$("#m-time").hidden=!mTimerOn();
 function mStart(){
   const n=+$("#m-level").value; const faces=sample(FACES,n); const deck=shuffle([...faces,...faces]);
-  const cols=n===12?(innerWidth<640?4:6):4; const board=$("#m-board"); board.style.gridTemplateColumns=`repeat(${cols},1fr)`; board.style.maxWidth=cols===6?"760px":"520px";
-  board.innerHTML=""; clearInterval(mState&&mState.timer);
+  const cols=mCols(n); const board=$("#m-board"); board.style.gridTemplateColumns=`repeat(${cols},1fr)`; board.style.maxWidth=cols>=5?"760px":"520px";
+  board.innerHTML=""; $("#m-result").innerHTML=""; clearInterval(mState&&mState.timer);
   mState={open:[],moves:0,found:0,n,lock:false,start:Date.now(),timer:setInterval(()=>$("#m-time").textContent="Time: "+Math.round((Date.now()-mState.start)/1000)+"s",1000)};
   $("#m-moves").textContent="Moves: 0"; $("#m-time").textContent="Time: 0s"; showBest("#m-best",mBestKey()," moves");
   deck.forEach((f,i)=>{const c=el("button",{class:"mcard","aria-label":"Hidden card"},`<span class="face back"></span><span class="face front">${f}</span>`);c.dataset.f=f;
@@ -23,9 +28,11 @@ async function mFlip(c){
   s.moves++; $("#m-moves").textContent="Moves: "+s.moves; const [a,b]=s.open; s.open=[];
   if(a.dataset.f===b.dataset.f){a.classList.add("matched");b.classList.add("matched");s.found++;setTimeout(()=>Sound.correct(),150);
     if(s.found===s.n){clearInterval(s.timer);const secs=Math.round((Date.now()-s.start)/1000);const r=Store.best(mBestKey(),s.moves,false);
-      setTimeout(()=>{Sound.win();toast(`🎉 All pairs in ${s.moves} moves, ${secs}s${r.isNew?" — new best!":""}`);showBest("#m-best",mBestKey()," moves");},500);
-      Store.set("best.match",Store.get("best.match_8"));}}
-  else{s.lock=true;await sleep(900);Sound.click();a.classList.remove("flipped");b.classList.remove("flipped");a.setAttribute("aria-label","Hidden card");b.setAttribute("aria-label","Hidden card");s.lock=false;}
+      Store.log("game.match",{score:s.moves,label:`${s.n} pairs · ${s.moves} moves`+(mTimerOn()?` · ${secs}s`:""),size:s.n});
+      Store.set("best.match",Store.get("best.match_8"));
+      setTimeout(()=>{Sound.win();showBest("#m-best",mBestKey()," moves");
+        $("#m-result").innerHTML=`<div class="result"><h3 style="margin-top:0">🎉 All ${s.n} pairs found in ${s.moves} moves${mTimerOn()?` (${secs} s)`:""}</h3><p>${r.isNew?"New best for this board size!":r.first?"First game on this board size — your best is saved.":`Your best on this board: ${r.best} moves.`}</p><button class="btn" onclick="document.getElementById('m-start').click()">▶ Play again</button></div>`;},500);}}
+  else{s.lock=true;await sleep(1100);Sound.click();a.classList.remove("flipped");b.classList.remove("flipped");a.setAttribute("aria-label","Hidden card");b.setAttribute("aria-label","Hidden card");s.lock=false;}
 }
 $("#m-start").onclick=mStart; $("#m-level").onchange=mStart; mStart();
 
