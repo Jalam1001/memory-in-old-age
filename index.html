@@ -54,7 +54,7 @@
 <script src="js/common.js"></script>
 <script>
 (function(){
-  const games=[["match","Memory Match","fewest moves, medium level"],["simon","Simon Tones","longest sequence"],["changed","What Changed?","best streak"],["grocery","Grocery List","best % correct"],["pattern","Pattern Grid","highest level"],["nback","N-Back","best accuracy %"]];
+  const games=[["match_6","Picture Pairs","fewest moves, 6 pairs"],["simon_relaxed","Simon Tones","longest sequence · relaxed"],["simon","Simon Tones","longest sequence · timed"],["changed_relaxed","What Changed?","best streak · relaxed"],["changed","What Changed?","best streak · timed"],["grocery_relaxed","Grocery List","best % correct · relaxed"],["grocery","Grocery List","best % correct · timed"],["pattern_relaxed","Pattern Grid","highest level · relaxed"],["pattern","Pattern Grid","highest level · timed"],["nback_relaxed","N-Back","best accuracy % · relaxed"],["nback","N-Back","best accuracy % · timed"]];
   const tests=[["words","Word list (immediate)"],["digits_f","Digit span forward"],["digits_b","Digit span backward"],["corsi","Block tapping span"],["reaction","Reaction time"],["story","Story recall"]];
   const wrap=document.getElementById("recent"); let any=false;
   games.forEach(([k,n,u])=>{const b=Store.get("best."+k);if(b!==null){any=true;wrap.insertAdjacentHTML("beforeend",`<div class="card teal"><h3 style="margin-top:0">🎮 ${n}</h3><div class="stat">${b}</div><p class="muted small">${u}</p></div>`);}});

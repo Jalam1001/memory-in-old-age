@@ -12,7 +12,7 @@ function latestScores(){
   const out=[];
   const last=(k,name)=>{const l=Store.get("log."+k,[]);if(l.length){const e=l[l.length-1];out.push(`${name}: ${e.label||e.score} (${new Date(e.t).toLocaleDateString()})`);}};
   last("game.cross","Crossword");last("game.spaced","Spaced Recall");last("game.match","Picture Pairs");
-  [["simon","Simon Tones best",""],["changed","What Changed? best streak",""],["grocery","Grocery List best","%"],["pattern","Pattern Grid best level",""],["nback","N-Back best","%"]].forEach(([k,n,u])=>{const b=Store.get("best."+k);if(b!==null)out.push(`${n}: ${b}${u}`);});
+  [["simon","Simon Tones best (timed)",""],["simon_relaxed","Simon Tones best (relaxed)",""],["changed","What Changed? best streak (timed)",""],["changed_relaxed","What Changed? best streak (relaxed)",""],["grocery","Grocery List best (timed)","%"],["grocery_relaxed","Grocery List best (relaxed)","%"],["pattern","Pattern Grid best level (timed)",""],["pattern_relaxed","Pattern Grid best level (relaxed)",""],["nback","N-Back best (timed)","%"],["nback_relaxed","N-Back best (relaxed)","%"]].forEach(([k,n,u])=>{const b=Store.get("best."+k);if(b!==null)out.push(`${n}: ${b}${u}`);});
   last("words","Word list (immediate)");last("words_delayed","Word list (delayed)");last("digits_f","Digit span forward");last("digits_b","Digit span backward");last("corsi","Block tapping");last("reaction","Reaction time");last("story","Story recall");
   return out;
 }

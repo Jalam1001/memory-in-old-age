@@ -249,3 +249,8 @@ input[type=date]{font:inherit;font-size:1.1rem;padding:.6rem .8rem;border-radius
 /* stage 3: 8 nav items — let the header use more width on desktop */
 @media (min-width:1181px){.nav{max-width:1360px}.nav ul{gap:.1rem}.nav a.link{padding:.5rem .55rem;font-size:.98rem}}
 .research-link{margin:.6rem 0 0;padding:.55rem .9rem;background:#EFE4F8;border-radius:12px;font-size:.95rem}
+/* v0.2 stage 5: relaxed / timed pace */
+.pace select{font-weight:800}
+.pace-note{background:#DDF3E4;color:#17603A;border-radius:14px;padding:.7rem 1rem;font-size:1rem;margin:.8rem 0}
+.ready-row:empty{display:none}
+.ready-btn{font-size:1.15rem}

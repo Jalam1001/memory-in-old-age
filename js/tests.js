@@ -2,6 +2,8 @@
 (function(){
 const {$, $$, sleep, sample, shuffle} = U;
 const norm = s => s.toLowerCase().replace(/[^a-z\s,]/g," ").split(/[\s,]+/).filter(Boolean).map(w=>w.replace(/(es|s)$/,""));
+const PW=Pace.bind("w-pace","words"), PD=Pace.bind("d-pace","digits"), PC=Pace.bind("c-pace","corsi");
+const tag=(f)=>f()==="relaxed"?" · relaxed":" · timed";
 const mmss = ms => {const s=Math.floor(ms/1000);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");};
 
 /* ================= WORD LIST ================= */
@@ -11,20 +13,22 @@ function wordScore(list,text){const said=new Set(norm(text));const hits=list.fil
 function chips(list,hits){return list.map(w=>`<span class="word-chip ${hits.includes(w)?"hit":"miss"}">${hits.includes(w)?"✓":"·"} ${w}</span>`).join("");}
 $("#w-start").onclick=async()=>{
   if(wordsActive) return; wordsActive=true;
-  const list=sample(POOL,10); const speakOn=$("#w-speak").checked;
+  const list=sample(POOL,10); const speakOn=$("#w-speak").checked; const wTag=tag(PW);
   $("#w-result").innerHTML=""; $("#w-input").hidden=true; $("#w-startrow").hidden=true; $("#w-delayed").hidden=true;
   $("#w-status").textContent="Get ready…"; $("#w-show").textContent="3"; Sound.beep(); await sleep(800);
   $("#w-show").textContent="2"; Sound.beep(); await sleep(800); $("#w-show").textContent="1"; Sound.beep(); await sleep(800);
   for(let i=0;i<list.length;i++){
     $("#w-status").textContent=`Word ${i+1} of ${list.length}`; $("#w-show").textContent=list[i];
-    const t=Date.now(); if(speakOn) await speak(list[i]); const rest=2000-(Date.now()-t); if(rest>0) await sleep(rest);
+    const t=Date.now(); if(speakOn) await speak(list[i]);
+    if(PW()==="relaxed") await Pace.ready($("#w-ready"),i<list.length-1?"Next word →":"✅ I'm ready to recall");
+    else {const rest=2000-(Date.now()-t); if(rest>0) await sleep(rest);}
     $("#w-show").textContent=""; await sleep(300);
   }
   $("#w-show").textContent="✍️"; $("#w-status").textContent="Now recall"; $("#w-input").hidden=false; $("#w-answer").value=""; $("#w-answer").focus();
   $("#w-check").onclick=()=>{
     const hits=wordScore(list,$("#w-answer").value);
     const n=hits.length; n>=5?Sound.correct():Sound.flip();
-    Store.log("words",{score:n,label:`${n}/10`});
+    Store.log("words",{score:n,label:`${n}/10${wTag}`});
     Store.set("pending.words",{list,t:Date.now(),imm:n});
     $("#w-input").hidden=true; $("#w-startrow").hidden=false; $("#w-start").textContent="↻ New word list"; wordsActive=false;
     $("#w-result").innerHTML=`<div class="result"><h3 style="margin-top:0">Immediate recall: ${n} of 10</h3><div class="progress"><span style="width:${n*10}%"></span></div>${chips(list,hits)}
@@ -59,12 +63,12 @@ showDelayed();
 let dRunning=false;
 $("#d-start").onclick=async()=>{
   if(dRunning) return; dRunning=true; $("#d-start").disabled=true; $("#d-result").innerHTML="";
-  const mode=$("#d-mode").value, speakOn=$("#d-speak").checked; let len=3, fails=0, best=0;
+  const mode=$("#d-mode").value, speakOn=$("#d-speak").checked; let len=3, fails=0, best=0; const dRelax=PD()==="relaxed", on=dRelax?1500:900, gap=dRelax?400:200, dTag=tag(PD);
   while(len<=12){
     $("#d-len").textContent="Length: "+len;
     const seq=Array.from({length:len},()=>Math.floor(Math.random()*10));
     $("#d-show").textContent="Watch…"; await sleep(900);
-    for(const d of seq){ $("#d-show").textContent=d; if(speakOn&&!Sound.muted) speak(String(d),1); else Sound.beep(); await sleep(900); $("#d-show").textContent=""; await sleep(200); }
+    for(const d of seq){ $("#d-show").textContent=d; if(speakOn&&!Sound.muted) speak(String(d),1); else Sound.beep(); await sleep(on); $("#d-show").textContent=""; await sleep(gap); }
     $("#d-show").textContent="?"; $("#d-prompt").textContent=mode==="f"?"Type the digits in the same order:":"Type the digits in REVERSE order (last one first):";
     $("#d-form").hidden=false; $("#d-answer").value=""; $("#d-answer").focus();
     const ans=await new Promise(res=>{$("#d-form").onsubmit=e=>{e.preventDefault();res($("#d-answer").value.replace(/\D/g,""));};});
@@ -75,9 +79,9 @@ $("#d-start").onclick=async()=>{
     await sleep(1300);
   }
   const key=mode==="f"?"digits_f":"digits_b";
-  Store.log(key,{score:best,label:`${best} digits`}); const b=Store.best(key,best);
+  Store.log(key,{score:best,label:`${best} digits${dTag}`}); const b=Store.best(dRelax?key+"_relaxed":key,best);
   $("#d-show").textContent="🏁"; $("#d-result").innerHTML=`<div class="result"><h3 style="margin-top:0">Your ${mode==="f"?"forward":"backward"} span: ${best} digits</h3>
-   <p>Personal best: <strong>${b.best}</strong>${b.isNew?" 🎉 new best!":""}</p>
+   <p>Personal best (${dRelax?"relaxed":"timed"} pace): <strong>${b.best}</strong>${b.isNew?" 🎉 new best!":""}</p>
    <p class="small">Backward span is usually a little shorter than forward span. The best comparison is with your own earlier scores. Tip: grouping digits into chunks (like a phone number: 415 · 627 · 9) helps.</p></div>`;
   Sound.win(); dRunning=false; $("#d-start").disabled=false; $("#d-start").textContent="↻ Try again";
 };
@@ -88,20 +92,20 @@ const board=$("#c-board"); const blocks=POS.map(([x,y],i)=>{const b=U.el("button
 let cAccept=null;
 blocks.forEach((b,i)=>b.addEventListener("click",()=>{if(!cAccept)return;Sound.note(i,0.25);b.classList.add("tap");setTimeout(()=>b.classList.remove("tap"),250);cAccept(i);}));
 $("#c-start").onclick=async()=>{
-  $("#c-start").disabled=true; $("#c-result").innerHTML=""; let len=2,fails=0,best=0;
+  $("#c-start").disabled=true; $("#c-result").innerHTML=""; let len=2,fails=0,best=0; const cRelax=PC()==="relaxed", con=cRelax?1100:650, cgap=cRelax?450:250, cTag=tag(PC);
   while(len<=9){
     $("#c-len").textContent="Length: "+len; $("#c-status").textContent="Watch…"; await sleep(900);
     const seq=sample([0,1,2,3,4,5,6,7,8],len);
-    for(const i of seq){blocks[i].classList.add("lit");Sound.note(i,0.4);await sleep(650);blocks[i].classList.remove("lit");await sleep(250);}
+    for(const i of seq){blocks[i].classList.add("lit");Sound.note(i,0.4);await sleep(con);blocks[i].classList.remove("lit");await sleep(cgap);}
     $("#c-status").textContent="Your turn — tap in order";
     const taps=[]; const ok=await new Promise(res=>{cAccept=i=>{taps.push(i);if(taps[taps.length-1]!==seq[taps.length-1]){cAccept=null;res(false);}else if(taps.length===seq.length){cAccept=null;res(true);}};});
     if(ok){Sound.correct();best=len;fails=0;len++;$("#c-status").textContent="✓ Correct!";}
     else{Sound.wrong();fails++;$("#c-status").textContent="✗ Not quite";seq.forEach((i,k)=>setTimeout(()=>{blocks[i].classList.add("lit");setTimeout(()=>blocks[i].classList.remove("lit"),300)},k*350));if(fails>=2)break;}
     await sleep(1400);
   }
-  Store.log("corsi",{score:best,label:`${best} blocks`}); const b=Store.best("corsi",best);
+  Store.log("corsi",{score:best,label:`${best} blocks${cTag}`}); const b=Store.best(cRelax?"corsi_relaxed":"corsi",best);
   $("#c-status").textContent="Finished"; Sound.win();
-  $("#c-result").innerHTML=`<div class="result"><h3 style="margin-top:0">Your block span: ${best}</h3><p>Personal best: <strong>${b.best}</strong>${b.isNew?" 🎉 new best!":""}</p><p class="small">Visual-spatial span is typically a little shorter than digit span. Practising the Pattern Grid game trains a similar skill.</p></div>`;
+  $("#c-result").innerHTML=`<div class="result"><h3 style="margin-top:0">Your block span: ${best}</h3><p>Personal best (${cRelax?"relaxed":"timed"} pace): <strong>${b.best}</strong>${b.isNew?" 🎉 new best!":""}</p><p class="small">Visual-spatial span is typically a little shorter than digit span. Practising the Pattern Grid game trains a similar skill.</p></div>`;
   $("#c-start").disabled=false; $("#c-start").textContent="↻ Try again";
 };
 
@@ -115,7 +119,7 @@ function rTap(){
   if(rState==="go"){const ms=Math.round(performance.now()-rStart);rTimes.push(ms);Sound.correct();
     $("#r-trial").textContent=`Try ${rTimes.length} / 5`;
     if(rTimes.length>=5){rState="done";pad.className="react-pad";const avg=Math.round(rTimes.reduce((a,b)=>a+b)/rTimes.length),best=Math.min(...rTimes);
-      pad.textContent=`Average ${avg} ms — tap to go again`;Store.log("reaction",{score:avg,label:`${avg} ms avg`});const b=Store.best("reaction",avg,false);
+      pad.textContent=`Average ${avg} ms — tap to go again`;Store.log("reaction",{score:avg,label:`${avg} ms avg · timed`});const b=Store.best("reaction",avg,false);
       $("#r-result").innerHTML=`<div class="result"><h3 style="margin-top:0">Average: ${avg} ms · fastest: ${best} ms</h3><p>Your times: ${rTimes.join(", ")} ms. Personal best average: <strong>${b.best} ms</strong>${b.isNew?" 🎉":""}</p><p class="small">Lower is faster. Phones and screens add their own delay, so compare only with your own results on the same device. Tiredness, some medicines and alcohol slow reaction time.</p></div>`;Sound.win();}
     else{pad.className="react-pad";pad.textContent=`${ms} ms — tap for next`;rState="between";}
     return;}

@@ -17,7 +17,7 @@
   if(footer){footer.innerHTML=`<div class="inner"><p><strong>Memory for Life</strong> — an educational site about memory in later life, with practice exercises and brain games.</p>
     <p class="small">⚠️ Nothing here is medical advice or a diagnosis. The practice exercises are informal, home-made activities — not validated clinical tests. If you or someone you love is worried about memory, please talk to a doctor.</p>
     <p class="small">Sources are listed on the <a href="writeup.html#references">Write-up</a> page. Scores are stored only in your own browser.</p>
-    <p class="small site-version">Version 0.2 (in progress) · <a href="https://github.com/Jalam1001/memory-in-old-age">Source on GitHub</a> · <a href="https://github.com/Jalam1001/memory-in-old-age/tree/v0.1">Version 0.1 (original site)</a></p></div>`;}
+    <p class="small site-version">Version 0.2 · <a href="https://github.com/Jalam1001/memory-in-old-age">Source on GitHub</a> · <a href="https://github.com/Jalam1001/memory-in-old-age/tree/v0.1">Version 0.1 (original site)</a></p></div>`;}
 
   /* ---------- Sound ---------- */
   let ctx=null; let muted=localStorage.getItem("mem.muted")==="1";
@@ -89,7 +89,15 @@
     const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target);}}),{threshold:0.01,rootMargin:"0px 0px -40px 0px"});
     els.forEach(e=>io.observe(e));}
 
-  window.Sound=Sound; window.speak=speak; window.Store=Store; window.U=U; window.toast=toast;
+  /* Pace: relaxed (default, untimed) vs timed mode, saved per game */
+  const Pace={
+    bind(id,key,onChange){const s=document.getElementById(id);if(!s)return ()=>"relaxed";s.value=Store.get("pace."+key,"relaxed")==="timed"?"timed":"relaxed";
+      s.addEventListener("change",()=>{Store.set("pace."+key,s.value);if(onChange)onChange(s.value);});return ()=>s.value;},
+    ready(anchor,label="✅ I'm ready"){return new Promise(res=>{const b=U.el("button",{class:"btn teal ready-btn",type:"button"},label);anchor.appendChild(b);
+      try{b.focus({preventScroll:true});}catch(e){} b.onclick=()=>{b.remove();Sound.click();res();};});},
+    clear(anchor){if(anchor)anchor.innerHTML="";}
+  };
+  window.Sound=Sound; window.speak=speak; window.Store=Store; window.U=U; window.toast=toast; window.Pace=Pace;
   const boot=()=>{initTabs();initReveal();};
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot); else boot();
 })();

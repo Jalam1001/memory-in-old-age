@@ -1,8 +1,15 @@
+"""Regenerate writeup.html from WRITEUP.md.  Usage: python3 scripts/build_writeup.py  (needs: pip install -r requirements.txt)"""
 import re, markdown
 md=open('WRITEUP.md').read()
 md=re.sub(r'^# .*\n','',md,count=1)
 md=re.sub(r'^\*An evidence-based.*\n','',md,flags=re.M)
-md=re.sub(r'(?<![\("])(https?://\S+)', lambda m:f'<a href="{m.group(1)}" target="_blank" rel="noopener">{m.group(1)}</a>', md)
+def _link(m):
+    url=m.group(1); tail=''
+    # keep trailing punctuation (e.g. "...12345/)." ) out of the link, but keep balanced brackets
+    while url and url[-1] in '.,;:)' and not (url[-1]==')' and url.count('(')>=url.count(')')):
+        tail=url[-1]+tail; url=url[:-1]
+    return f'<a href="{url}" target="_blank" rel="noopener">{url}</a>{tail}'
+md=re.sub(r'(?<![\("])(https?://\S+)', _link, md)
 html=markdown.markdown(md,extensions=['tables'])
 # ids for h2
 toc=[]
