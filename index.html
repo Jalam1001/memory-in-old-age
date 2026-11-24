@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Memory for Life — Memory in Old Age: causes, tests, games</title>
-<meta name="description" content="An easy-to-read guide to memory in older age: why it changes, how memory is tested, evidence-based ways to improve it, plus free self-checks and memory games with sound.">
+<meta name="description" content="An easy-to-read guide to memory in older age: why it changes, how memory is tested, evidence-based ways to improve it, plus practice exercises, a private log and memory games with sound.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -14,10 +14,10 @@
     <div class="bubbles" aria-hidden="true"><span style="width:180px;height:180px;right:-40px;top:-30px"></span><span style="width:90px;height:90px;right:22%;bottom:-20px;animation-delay:-4s"></span><span style="width:60px;height:60px;right:8%;bottom:30%;animation-delay:-8s"></span></div>
     <p class="pill" style="background:rgba(255,255,255,.2);color:#fff">Memory in later life</p>
     <h1>Keep your memory<br>active, curious and strong.</h1>
-    <p class="lead">Learn what normally changes with age and what doesn't, try simple memory self-checks, practise proven memory techniques, and play brain games with friendly sounds.</p>
+    <p class="lead">Learn what normally changes with age and what doesn't, try practice exercises, practise proven memory techniques, and play brain games with friendly sounds.</p>
     <div class="btn-row">
       <a class="btn light" href="games.html">🎮 Play memory games</a>
-      <a class="btn light" href="tests.html">📝 Try a self-check</a>
+      <a class="btn light" href="tests.html">📝 Practice exercises</a>
       <a class="btn light" href="writeup.html">📖 Read the write-up</a>
     </div>
   </section>
@@ -31,7 +31,9 @@
   <h2 class="reveal">Explore the site</h2>
   <section class="grid c2 reveal">
     <a class="card coral" href="writeup.html"><div class="emoji">📖</div><h3>Write-up: why memory changes</h3><p>Normal ageing vs. mild cognitive impairment vs. dementia, the main causes of decline, warning signs, and treatable causes to rule out.</p></a>
-    <a class="card teal" href="tests.html"><div class="emoji">📝</div><h3>Self-tests</h3><p>Word-list recall (now and later), digit span, block tapping, reaction speed and story recall — modelled on tasks doctors and researchers use.</p></a>
+    <a class="card teal" href="tests.html"><div class="emoji">📝</div><h3>Practice exercises</h3><p>Word-list recall (now and later), digit span, block tapping, reaction speed and story recall. Home-made practice activities — not clinical tests.</p></a>
+    <a class="card coral" href="clinical-tests.html"><div class="emoji">🩺</div><h3>Memory tests doctors use</h3><p>MoCA, Mini-Cog, SLUMS, MMSE, AD8 and formal memory testing compared: what they measure, who gives them, how long they take, and their limits.</p></a>
+    <a class="card plum" href="log.html"><div class="emoji">📓</div><h3>My private log</h3><p>Keep dated notes on memory, mood, sleep and medicines to discuss with your clinician. Stays in your browser; print or export it.</p></a>
     <a class="card plum" href="improve.html"><div class="emoji">🌱</div><h3>Improve memory</h3><p>Techniques to <em>build</em> memories (encoding) and <em>find</em> them again (recall), the lifestyle evidence, and a simple daily routine.</p></a>
     <a class="card" href="games.html"><div class="emoji">🎮</div><h3>Memory games</h3><p>Card pairs, Simon tones, What Changed?, Grocery List, Pattern Grid and N-Back — each with levels, sounds and saved best scores.</p></a>
   </section>
@@ -55,7 +57,7 @@
   const wrap=document.getElementById("recent"); let any=false;
   games.forEach(([k,n,u])=>{const b=Store.get("best."+k);if(b!==null){any=true;wrap.insertAdjacentHTML("beforeend",`<div class="card teal"><h3 style="margin-top:0">🎮 ${n}</h3><div class="stat">${b}</div><p class="muted small">${u}</p></div>`);}});
   tests.forEach(([k,n])=>{const l=Store.get("log."+k,[]);if(l.length){any=true;const last=l[l.length-1];wrap.insertAdjacentHTML("beforeend",`<div class="card plum"><h3 style="margin-top:0">📝 ${n}</h3><div class="stat">${last.label||last.score}</div><p class="muted small">last tried ${U.fmtDate(last.t)}</p></div>`);}});
-  if(!any) wrap.innerHTML='<p class="muted">Nothing yet — scores from games and self-tests will appear here (stored only on this device).</p>';
+  if(!any) wrap.innerHTML='<p class="muted">Nothing yet — scores from games and practice exercises will appear here (stored only on this device).</p>';
 })();
 </script>
 </body>

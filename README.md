@@ -12,13 +12,15 @@ Designed for older adults and their families: large type, high contrast, warm co
 |---|---|
 | **Home** | Key facts, quick links, and your recent scores |
 | **Write-up** | Normal ageing vs. MCI vs. dementia, causes of decline, the 14 Lancet Commission risk factors, treatable causes, how memory is tested, how to improve it, and 18 references |
-| **Self-tests** | Word list (immediate + delayed recall), digit span (forward/backward), Corsi-style block tapping, reaction speed, story recall, and a results history |
+| **Doctors' tests** (`clinical-tests.html`) | Comparison of MoCA, Mini-Cog, SLUMS, MMSE, AD8 and RAVLT (what each measures, who gives it, time, limitations), how clinicians use everyday function and repeat testing (including practice effects), and official links with permission notes — no test is reproduced on the site |
+| **Practice exercises** (`tests.html`) | Home-made, unvalidated practice activities (not clinical tests): word list (immediate + delayed recall), digit span, Corsi-style block tapping, reaction speed, story recall, and a results history |
+| **My log** (`log.html`) | Private, browser-only log: dated entries by category (memory, mood, sleep, medications, other), optional attached scores, print view, CSV/JSON export, delete-all |
 | **Improve memory** | Strategies for *building* memories (attention, elaboration, chunking, dual coding, memory palace) and *recalling* them (retrieval practice, spacing, context cues), lifestyle evidence table, a spaced-review planner, and a daily routine |
 | **Games** | **Main (untimed):** ✏️ Crossword (easy/medium/hard, 2 hand-written puzzles each, check & reveal) · 🗂️ Spaced Recall (your own names/facts, reviewed at 1 · 3 · 7 · 14 · 30 · 60 days, plus an in-session practice round) · 🃏 Picture Pairs (4–15 pairs, optional timer) · 📈 per-game progress history. **More games:** 🎵 Simon Tones · 🔍 What Changed? · 🛒 Grocery List · 🔷 Pattern Grid · 🔁 N-Back |
 
 **Sound:** all tones are generated live with the Web Audio API (flip, correct, wrong, win, Simon notes, block tones). Word lists, digits, stories and N-back letters can be read aloud with the browser's speech synthesis. One mute button controls everything.
 
-> ⚠️ **Not a diagnostic tool.** The self-tests are informal, unvalidated versions of research tasks. If you are worried about memory, please see a doctor.
+> ⚠️ **Not a diagnostic tool.** The practice exercises are home-made and unvalidated — not clinical tests. If you are worried about memory, please see a doctor.
 
 ## Write-up summary
 
@@ -43,10 +45,11 @@ To regenerate `writeup.html` after editing `WRITEUP.md`: `pip install markdown &
 ## Structure
 
 ```
-index.html  writeup.html  tests.html  improve.html  games.html
+index.html  writeup.html  clinical-tests.html  tests.html  improve.html  games.html  log.html
 css/style.css
 js/common.js   # header/footer, Web Audio sounds, speech, storage, tabs, animations
-js/tests.js    # self-tests
+js/tests.js    # practice exercises
+js/log.js      # private clinician log
 js/games.js    # Picture Pairs + extra games
 js/games2.js   # Crossword, Spaced Recall, progress view
 WRITEUP.md     # full write-up + references
@@ -55,6 +58,7 @@ WRITEUP.md     # full write-up + references
 ## Changelog
 
 - **Version 0.2 — in progress** (deployed from `main`)
+  - Stage 2: "Memory tests doctors use" page (MoCA, Mini-Cog, SLUMS, MMSE, AD8, RAVLT comparison; how clinicians use function, repeat testing and practice effects; official links and why we link instead of embedding), private clinician log with print and CSV/JSON export, and "Self-tests" renamed "Practice exercises" site-wide (same `tests.html` URL).
   - Stage 1: three main games built in and placed first on the Games page — Crossword with difficulty levels, Spaced Recall for names and facts, Picture Pairs with adjustable board sizes. All untimed by default, with explanations of what each score measures and a per-game progress view. Data stays in the browser (`localStorage`), with clear-data buttons.
 - **Version 0.1 — original site** — tag [`v0.1`](https://github.com/Jalam1001/memory-in-old-age/releases/tag/v0.1), branch [`v0.1`](https://github.com/Jalam1001/memory-in-old-age/tree/refs/heads/v0.1) (commit `c8baf04`). Write-up, self-tests, six games with sound.
 

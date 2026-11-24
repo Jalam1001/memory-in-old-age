@@ -32,7 +32,7 @@ p,li{font-size:1rem}
 .icon-btn{border:0;background:var(--card);box-shadow:var(--shadow);border-radius:14px;min-width:48px;height:48px;font-size:1.3rem;cursor:pointer;color:var(--ink)}
 .icon-btn:hover{transform:translateY(-2px)}
 #menuBtn{display:none}
-@media (max-width:860px){
+@media (max-width:1180px){
   #menuBtn{display:block;margin-left:auto}
   .nav ul{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--bg);padding:.5rem 1rem 1rem;border-bottom:3px solid var(--bg2)}
   .nav ul.open{display:flex}
@@ -214,3 +214,23 @@ footer a{color:var(--sun2)}
 .site-version{opacity:.8}
 .stage,.panel,[id]{scroll-margin-top:96px}
 select{max-width:100%}
+
+/* v0.2 stage 2: clinical tests + log */
+.compare td{font-size:.95rem}
+.compare td:first-child{min-width:130px}
+.log-entry{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:1rem 1.2rem;margin-bottom:1rem;border-left:8px solid var(--sun)}
+.log-entry.cat-memory{border-color:var(--plum)}.log-entry.cat-mood{border-color:var(--sun)}.log-entry.cat-sleep{border-color:var(--teal)}.log-entry.cat-medications{border-color:var(--coral)}.log-entry.cat-other{border-color:#9A8CA8}
+.log-head{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.log-note{margin:.5rem 0}
+input[type=date]{font:inherit;font-size:1.1rem;padding:.6rem .8rem;border-radius:12px;border:3px solid #E5D5C5;background:#FFFDF9;color:var(--ink);width:100%;min-height:52px}
+.print-only{display:none}
+@media print{
+  .site-header,footer,.no-print,.toast,.skip{display:none!important}
+  .print-only{display:block}
+  body{background:#fff;font-size:12pt}
+  main{padding:0;max-width:none}
+  .log-entry{box-shadow:none;border:1px solid #999;border-left:6px solid #555;break-inside:avoid}
+  .reveal{opacity:1!important;transform:none!important}
+  a{color:#000}
+}
+.nav a.link{white-space:nowrap;padding:.5rem .65rem}

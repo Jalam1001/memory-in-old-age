@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My private memory log — notes to share with your clinician | Memory for Life</title>
+<meta name="description" content="A private, browser-only log for noting memory, mood, sleep and medication changes to discuss with a clinician. Print or export it for appointments.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header id="site-header"></header>
+<main id="main">
+<section class="page-hero no-print">
+  <h1>📓 My private log</h1>
+  <p>Jot down changes you or your family notice — a missed appointment, a forgotten medication, trouble with bills, getting turned around on a familiar route — along with mood, sleep and medicine changes. Bring it to your next appointment: clinicians pay close attention to changes in everyday life.<sup><a href="clinical-tests.html#how">[why]</a></sup></p>
+  <div class="callout"><strong>🔒 Private by design.</strong> Your notes are saved only in this browser on this device (<code>localStorage</code>). Nothing is sent to us or anyone else, and there's no account. That also means: if you clear your browser data or switch devices, the notes are gone — use <strong>Export</strong> to keep a copy. Anyone using this browser could see them.</div>
+</section>
+
+<section class="stage no-print">
+  <h2 style="margin-top:0">➕ Add an entry</h2>
+  <form id="lg-form" autocomplete="off">
+    <div class="grid c2">
+      <div><label for="lg-date">Date</label><input type="date" id="lg-date" required></div>
+      <div><label for="lg-cat">Category</label><br><select id="lg-cat"><option value="memory">🧠 Memory</option><option value="mood">💛 Mood</option><option value="sleep">😴 Sleep</option><option value="medications">💊 Medications</option><option value="other">📝 Other</option></select></div>
+    </div>
+    <label for="lg-note" style="display:block;margin-top:.8rem">What happened or what did you notice?</label>
+    <textarea id="lg-note" placeholder="e.g. Forgot my 2 pm dentist appointment even though it was on the calendar. My daughter says I asked the same question twice at dinner."></textarea>
+    <label style="display:block;margin-top:.6rem"><input type="checkbox" id="lg-scores"> Attach my latest game and practice-exercise scores</label>
+    <p class="small muted" id="lg-scores-preview" hidden></p>
+    <div class="btn-row"><button class="btn teal" type="submit">💾 Save entry</button></div>
+  </form>
+</section>
+
+<section class="no-print" style="margin-top:1.5rem">
+  <div class="btn-row"><button class="btn plum" id="lg-print">🖨️ Print / save as PDF</button><button class="btn ghost" id="lg-csv">⬇️ Export CSV</button><button class="btn ghost" id="lg-json">⬇️ Export JSON</button><button class="btn ghost" id="lg-clear">🗑 Delete all entries</button></div>
+  <p class="small muted">CSV opens in a spreadsheet; JSON is a complete backup. Printing gives a clean page you can hand to your doctor.</p>
+</section>
+
+<section id="lg-printable">
+  <div class="print-only"><h1>Memory log</h1><p id="lg-print-meta"></p></div>
+  <h2 class="no-print">🗂️ My entries <span class="pill" id="lg-count">0</span></h2>
+  <div class="no-print" style="margin-bottom:.8rem"><label for="lg-filter">Show: </label><select id="lg-filter"><option value="">All categories</option><option value="memory">Memory</option><option value="mood">Mood</option><option value="sleep">Sleep</option><option value="medications">Medications</option><option value="other">Other</option></select></div>
+  <div id="lg-list"></div>
+</section>
+
+<section class="callout no-print" style="margin-top:2rem"><h3 style="margin-top:0">What to note</h3>
+<ul><li><strong>Memory:</strong> what you forgot, how often, and whether it's new. Repeating questions, missed appointments or bills, getting lost on familiar routes.</li>
+<li><strong>Mood:</strong> low mood, worry, losing interest in things — depression and anxiety can affect memory.</li>
+<li><strong>Sleep:</strong> hours, snoring, waking at night, daytime sleepiness.</li>
+<li><strong>Medications:</strong> new or changed medicines (including over-the-counter sleep aids or allergy pills), missed doses.</li>
+<li><strong>Other:</strong> hearing or vision changes, falls, illness, big life events.</li></ul>
+<p class="small">Game and exercise scores are only a rough personal record — they are not clinical test results. See <a href="clinical-tests.html">memory tests doctors use</a>.</p></section>
+</main>
+<footer id="site-footer"></footer>
+<script src="js/common.js"></script>
+<script src="js/log.js"></script>
+</body>
+</html>

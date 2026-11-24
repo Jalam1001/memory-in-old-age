@@ -1,6 +1,6 @@
 /* Shared: header/footer, sound (Web Audio), speech, storage, reveal animations */
 (function(){
-  const pages=[["index.html","Home"],["writeup.html","Write-up"],["tests.html","Self-tests"],["improve.html","Improve memory"],["games.html","Games"]];
+  const pages=[["index.html","Home"],["writeup.html","Write-up"],["clinical-tests.html","Doctors' tests"],["tests.html","Practice"],["improve.html","Improve"],["games.html","Games"],["log.html","My log"]];
   const here=(location.pathname.split("/").pop()||"index.html");
   const header=document.getElementById("site-header");
   if(header){
@@ -15,7 +15,7 @@
   }
   const footer=document.getElementById("site-footer");
   if(footer){footer.innerHTML=`<div class="inner"><p><strong>Memory for Life</strong> — an educational site about memory in later life, with self-checks and brain games.</p>
-    <p class="small">⚠️ Nothing here is medical advice or a diagnosis. The self-tests are informal versions of research tasks and are not validated clinical instruments. If you or someone you love is worried about memory, please talk to a doctor.</p>
+    <p class="small">⚠️ Nothing here is medical advice or a diagnosis. The practice exercises are informal, home-made activities — not validated clinical tests. If you or someone you love is worried about memory, please talk to a doctor.</p>
     <p class="small">Sources are listed on the <a href="writeup.html#references">Write-up</a> page. Scores are stored only in your own browser.</p>
     <p class="small site-version">Version 0.2 (in progress) · <a href="https://github.com/Jalam1001/memory-in-old-age">Source on GitHub</a> · <a href="https://github.com/Jalam1001/memory-in-old-age/tree/v0.1">Version 0.1 (original site)</a></p></div>`;}
 

@@ -91,7 +91,7 @@ Memory problems are assessed by a clinician using a history (ideally with someon
 - **Reaction time / processing speed** tasks: how quickly a person responds; speed slows with age and was a target of the ACTIVE training trial.[[11]](#ref11)
 - **Verbal fluency**: name as many animals (or words starting with F) as possible in 60 seconds.
 
-This website includes **informal, browser-based versions** of word-list recall (immediate and delayed), digit span forward/backward, block tapping, reaction time and story recall. They are for interest and self-tracking only — they are not validated, and they cannot diagnose anything.
+This website includes home-made **practice exercises** (word-list recall, digit span, block tapping, reaction time and story recall). They are not copies of any clinical test, are not validated, and cannot diagnose anything. For a detailed comparison of MoCA, Mini-Cog, SLUMS, MMSE, AD8 and the RAVLT, see the site's "Memory tests doctors use" page (`clinical-tests.html`).
 
 ## 5. How to improve memory
 

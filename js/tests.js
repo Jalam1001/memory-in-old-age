@@ -1,4 +1,4 @@
-/* Self-tests: word list, digit span, Corsi, reaction, story recall */
+/* Practice exercises: word list, digit span, Corsi, reaction, story recall */
 (function(){
 const {$, $$, sleep, sample, shuffle} = U;
 const norm = s => s.toLowerCase().replace(/[^a-z\s,]/g," ").split(/[\s,]+/).filter(Boolean).map(w=>w.replace(/(es|s)$/,""));
@@ -157,5 +157,5 @@ function renderHistory(){const rows=[];for(const k in NAMES){Store.get("log."+k,
   rows.sort((a,b)=>b[0]-a[0]);$("#h-body").innerHTML=rows.length?rows.slice(0,60).map(r=>`<tr><td>${r[1]}</td><td>${U.fmtDate(r[0])}</td><td><strong>${r[2]}</strong></td></tr>`).join(""):'<tr><td colspan="3" class="muted">No results yet — try a test!</td></tr>';}
 document.addEventListener("tabchange",e=>{if(e.detail==="t-history")renderHistory();});
 renderHistory();
-$("#h-clear").onclick=()=>{if(confirm("Clear all saved self-test results on this device?")){for(const k in NAMES){Store.set("log."+k,[]);Store.set("best."+k,null);}Store.set("pending.words",null);Store.set("pending.story",null);renderHistory();toast("History cleared");}};
+$("#h-clear").onclick=()=>{if(confirm("Clear all saved practice-exercise results on this device?")){for(const k in NAMES){Store.set("log."+k,[]);Store.set("best."+k,null);}Store.set("pending.words",null);Store.set("pending.story",null);renderHistory();toast("History cleared");}};
 })();
