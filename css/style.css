@@ -234,3 +234,17 @@ input[type=date]{font:inherit;font-size:1.1rem;padding:.6rem .8rem;border-radius
   a{color:#000}
 }
 .nav a.link{white-space:nowrap;padding:.5rem .65rem}
+/* v0.2 stage 3: evidence labels */
+.ev{display:inline-block;margin:.15rem .25rem .15rem 0;padding:.2rem .6rem;border-radius:999px;font-size:.82rem;font-weight:800;line-height:1.3;border:2px solid transparent}
+.ev.score{background:#E0F0FA;color:#155A85;border-color:#9CCBE8}
+.ev.func{background:#DDF3E4;color:#17603A;border-color:#97D3AA}
+.ev.slow{background:#EFE4F8;color:#5B2A86;border-color:#C7A9E2}
+.ev.none{background:#EFEDEA;color:#5A5650;border-color:#CFCAC2}
+.ev.risk{background:#FFF1D6;color:#7A4B00;border-color:#F2C46B}
+.ev.fix{background:#FDE5DD;color:#9A3412;border-color:#F4A98E}
+.ev-cell{min-width:11rem}
+.ev-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.6rem 1.2rem;background:var(--card);padding:1.1rem 1.3rem;border-radius:var(--radius);box-shadow:var(--shadow)}
+.ev-legend>div{display:flex;flex-direction:column;gap:.2rem}
+.ev-legend span:not(.ev){font-size:.95rem;color:var(--ink2)}
+/* stage 3: 8 nav items — let the header use more width on desktop */
+@media (min-width:1181px){.nav{max-width:1360px}.nav ul{gap:.1rem}.nav a.link{padding:.5rem .55rem;font-size:.98rem}}

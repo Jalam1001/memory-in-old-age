@@ -1,6 +1,6 @@
 /* Shared: header/footer, sound (Web Audio), speech, storage, reveal animations */
 (function(){
-  const pages=[["index.html","Home"],["writeup.html","Write-up"],["clinical-tests.html","Doctors' tests"],["tests.html","Practice"],["improve.html","Improve"],["games.html","Games"],["log.html","My log"]];
+  const pages=[["index.html","Home"],["writeup.html","Write-up"],["clinical-tests.html","Doctors' tests"],["tests.html","Practice"],["improve.html","Improve"],["remedies.html","Remedies"],["games.html","Games"],["log.html","My log"]];
   const here=(location.pathname.split("/").pop()||"index.html");
   const header=document.getElementById("site-header");
   if(header){
