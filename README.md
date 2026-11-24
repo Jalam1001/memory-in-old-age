@@ -1,6 +1,6 @@
 # 🧠 Memory for Life — Memory in Old Age
 
-An easy-to-read, evidence-based website about memory in later life: **why memory changes, how it is tested, how to improve it**, plus interactive **self-tests** and **memory games with sound**.
+An easy-to-read, evidence-based website about memory in later life: **why memory changes, how it is tested, how to improve it**, plus **practice exercises**, a **private log**, a **doctors' tests guide** and **memory games with sound**.
 
 **🌐 Live site:** https://jalam1001.github.io/memory-in-old-age/
 
